@@ -19,10 +19,13 @@ def upload_file():
     media_body=MediaIoBaseUpload(uploaded_file, uploaded_file.mimetype, resumable=True)
     created_at= datetime.now().strftime("%Y%m%d%H%M%S")
     file_metadata={
-        "name":f"{uploaded_file.filename} ({created_at})"
+        "name":f"{uploaded_file.filename} ({created_at})",
+        "appProperties":{
+            "file_description":request.form.get("description")
+        }
     }
 
-    returned_fields="id, name, mimeType, webViewLink, exportLinks"
+    returned_fields="id, name, mimeType, webViewLink, exportLinks, appProperties"
     
     upload_response=service.files().create(
         body = file_metadata, 
